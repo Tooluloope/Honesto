@@ -3,7 +3,7 @@ import { TextAnswer } from '../Text/answer'
 import { MultiChoiceAnswer } from '../Multichoice/answer'
 import { ScaleAnswer } from '../Scale/answer'
 import { Box, Flex, Text, useColorMode } from '@chakra-ui/react'
-import { QuestionT } from '../../store/QuestionsSlice'
+import { QuestionT } from '../../context/QuestionProvider'
 
 export interface IQuestionWithAnswer extends QuestionT {
   answer: string | number

@@ -1,7 +1,8 @@
 import { useTab, useMultiStyleConfig, Button } from '@chakra-ui/react'
 import React from 'react'
-import { UserT } from '../../store/UsersSlice'
 import User from '../User/User'
+import { UserT } from '../../context/types'
+
 interface ICustomButton {
   user: UserT
 }

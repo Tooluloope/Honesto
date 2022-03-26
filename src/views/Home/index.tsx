@@ -4,29 +4,34 @@ import Button from '../../components/Button'
 import MainLayout from '../../layouts/MainLayout'
 import Select from 'react-select'
 import styles from './home.module.css'
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { getUsers, UserT } from '../../store/UsersSlice/index'
-import { login } from '../../store/AccountSlice'
+import {
+  AccountContext,
+  DispatchAccountContext,
+} from '../../context/AccountProvider'
+import { DispatchUserContext, UserContext } from '../../context/UserProvider'
+import { UserT } from '../../context/types'
 
 const Home = () => {
-  const dispatch = useAppDispatch()
-  const { account: currentUser } = useAppSelector((state) => state.account)
+  const currentUser = React.useContext(AccountContext)
+  const accountDispatch = React.useContext(DispatchAccountContext)
+  const userDispatch = React.useContext(DispatchUserContext)
 
-  const {
-    users: allUsers,
-    usersError,
-    usersLoading,
-  } = useAppSelector((state) => state.users)
-  const [selectedUser, setUserForLogin] = React.useState<UserT | null>(null)
+  const allUsers = React.useContext(UserContext)
+  const [selectedUser, setUserForLogin] = React.useState<UserT | null>()
 
   if (currentUser != null) {
     return <Navigate to="/share-feedback" />
   }
 
   const handleSubmit = () => {
-    if (selectedUser) {
-      dispatch(login(selectedUser))
-    }
+    accountDispatch({
+      action: 'login',
+      payload: selectedUser,
+    })
+    userDispatch({
+      action: 'set',
+      payload: allUsers,
+    })
   }
 
   return (

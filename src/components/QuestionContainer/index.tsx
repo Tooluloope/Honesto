@@ -1,9 +1,9 @@
 import React from 'react'
+import { QuestionT } from '../../context/QuestionProvider'
 import { TextChoice } from '../Text/index'
 import { MultiChoice } from '../Multichoice/index'
 import { Scale } from '../Scale/index'
 import { IAnswer } from '../../views/FeedbackQuestion'
-import { QuestionT } from '../../store/QuestionsSlice'
 
 export interface IQuestionContainer {
   question: QuestionT

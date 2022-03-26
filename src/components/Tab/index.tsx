@@ -9,8 +9,9 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { FeedbackT } from '../../store/FeedbackSlice'
-import { useAppSelector } from '../../store/hooks'
+import { FeedbackT } from '../../context/FeedbackProvider'
+import { QuestionContext } from '../../context/QuestionProvider'
+import { UserContext } from '../../context/UserProvider'
 import { CustomTab } from '../TabButton'
 import { QuestionAnswerPanel } from '../TabPanel/QuestionAnswerPanel'
 
@@ -20,12 +21,7 @@ interface ITab {
 }
 
 export const Tab = ({ userFeedbacks, team }: ITab) => {
-  const { users, usersLoading, usersError } = useAppSelector(
-    (state) => state.users,
-  )
-  const { questions, questionsLoading, questionsError } = useAppSelector(
-    (state) => state.questions,
-  )
+  const users = React.useContext(UserContext)
   const [searchParams] = useSearchParams()
   const defaultUserId = searchParams.get('user')
   const { colorMode } = useColorMode()
@@ -43,6 +39,7 @@ export const Tab = ({ userFeedbacks, team }: ITab) => {
     return index === -1 ? 0 : index
   }
 
+  const questions = React.useContext(QuestionContext)
   const orientation = useBreakpointValue({
     base: 'horizontal',
     md: 'vertical',

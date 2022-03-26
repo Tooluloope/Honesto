@@ -3,11 +3,11 @@ import App from './App'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import reportWebVitals from './reportWebVitals'
+import UserProvider from './context/UserProvider'
+import QuestionProvider from './context/QuestionProvider'
+import AccountProvider from './context/AccountProvider'
 import { ChakraProvider, extendTheme, ThemeConfig } from '@chakra-ui/react'
-import { Provider } from 'react-redux'
-import { store } from './store/index'
-import { PersistGate } from 'redux-persist/integration/react'
-import { persistStore } from 'redux-persist'
+import FeedbackProvider from './context/FeedbackProvider'
 
 const config: ThemeConfig = {
   initialColorMode: 'system',
@@ -20,17 +20,19 @@ if (process.env.NODE_ENV === 'development') {
   worker.start()
 }
 
-let persistor = persistStore(store)
-
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </PersistGate>
-    </Provider>
+    <AccountProvider>
+      <UserProvider>
+        <QuestionProvider>
+          <FeedbackProvider>
+            <ChakraProvider theme={theme}>
+              <App />
+            </ChakraProvider>
+          </FeedbackProvider>
+        </QuestionProvider>
+      </UserProvider>
+    </AccountProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

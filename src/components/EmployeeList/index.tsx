@@ -1,20 +1,20 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AccountContext } from '../../context/AccountProvider'
+import { FeedbackContext } from '../../context/FeedbackProvider'
+import { UserContext } from '../../context/UserProvider'
 import Button from '../Button'
 import User from '../User'
 import styles from './index.module.css'
 import { Box, useColorMode } from '@chakra-ui/react'
-import { useAppSelector } from '../../store/hooks'
 
 interface IEmployeeList {
   isConfirmation?: boolean
 }
 export const EmployeeList = ({ isConfirmation }: IEmployeeList) => {
-  const { users, usersLoading, usersError } = useAppSelector(
-    (state) => state.users,
-  )
-  const { account } = useAppSelector((state) => state.account)
-  const feedbacks = useAppSelector((state) => state.feedbacks.feedbacks)
+  const users = React.useContext(UserContext)
+  const feedbacks = React.useContext(FeedbackContext)
+  const account = React.useContext(AccountContext)
   const { colorMode: mode } = useColorMode()
   const navigate = useNavigate()
 

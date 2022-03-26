@@ -1,14 +1,15 @@
 import * as React from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import { Box, Text, Flex } from '@chakra-ui/react'
+import { AccountContext } from '../../context/AccountProvider'
+import { FeedbackContext } from '../../context/FeedbackProvider'
 import { NoFeedback } from '../../components/NoFeedback'
 
 import { Tab } from '../../components/Tab'
-import { useAppSelector } from '../../store/hooks'
 
 const TeamFeedback = () => {
-  const feedbacks = useAppSelector((state) => state.feedbacks.feedbacks)
-  const { account } = useAppSelector((state) => state.account)
+  const feedbacks = React.useContext(FeedbackContext)
+  const account = React.useContext(AccountContext)
   const userFeedbacks = feedbacks.filter(
     (feedback) => feedback.to === account?.id,
   )

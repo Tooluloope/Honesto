@@ -1,7 +1,7 @@
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { EmployeeList } from '.'
-import { UserT } from '../../store/UsersSlice'
+import { UserT } from '../../context/types'
 import customRender from '../../tests/index'
 
 const users = [
@@ -91,7 +91,7 @@ describe('Give Feedback', () => {
       {
         accountValue: null,
         userValue: users,
-        questionValue: [],
+        questionValue: null,
         feedbackValue: [],
       },
     )
@@ -104,7 +104,7 @@ describe('Give Feedback', () => {
       {
         accountValue: account,
         userValue: users,
-        questionValue: [],
+        questionValue: null,
         feedbackValue: feedback,
       },
     )
@@ -118,7 +118,7 @@ describe('Give Feedback', () => {
       {
         accountValue: account,
         userValue: users,
-        questionValue: [],
+        questionValue: null,
         feedbackValue: feedback,
       },
     )

@@ -1,18 +1,20 @@
 import { NavLink } from 'react-router-dom'
 import styles from './header.module.css'
 import * as React from 'react'
+import {
+  AccountContext,
+  DispatchAccountContext,
+} from '../../context/AccountProvider'
 
 import { Box, Flex, Image, Text } from '@chakra-ui/react'
 import { ModeToggle } from '../../components/ModeToggle'
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { logout } from '../../store/AccountSlice'
 
 const Header = () => {
-  const { account: currentUser } = useAppSelector((state) => state.account)
-  const dispatch = useAppDispatch()
+  const currentUser = React.useContext(AccountContext)
+  const logoutUser = React.useContext(DispatchAccountContext)
 
   const handleLogout = () => {
-    dispatch(logout())
+    logoutUser({ action: 'logout' })
   }
 
   return (

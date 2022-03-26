@@ -1,25 +1,39 @@
 import * as React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { DispatchUserContext } from '../context/UserProvider'
+import { DispatchQuestionContext } from '../context/QuestionProvider'
 import Components from '../views/Components'
 import ErrorHandler from './ErrorHandler'
 import GiveFeedback from '../views/GiveFeedback'
 import Home from '../views/Home'
+import http from '../common/http'
 import NotFound from '../views/NotFound'
 import ReviewFeedback from '../views/ReviewFeedback'
 import PrivateRoute from '../components/Routing/PrivateRoute'
 import FeedBackQuestions from '../views/FeedbackQuestion'
 import Successful from '../views/Successful'
 import TeamFeedback from '../views/TeamFeedback'
-import { useAppDispatch } from '../store/hooks'
-import { getUsers } from '../store/UsersSlice/index'
-import { getQuestions } from '../store/QuestionsSlice/index'
 
 const App = () => {
-  const dispatch = useAppDispatch()
+  const userDispatch = React.useContext(DispatchUserContext)
+  const questionDispatch = React.useContext(DispatchQuestionContext)
+
   React.useEffect(() => {
-    dispatch(getUsers())
-    dispatch(getQuestions())
-  }, [dispatch])
+    Promise.all([http.get('questions'), http.get('people')]).then(
+      ([questions, people]) => {
+        userDispatch({
+          action: 'set',
+          payload: people,
+        })
+
+        questionDispatch({
+          action: 'set',
+          payload: questions,
+        })
+      },
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <BrowserRouter>

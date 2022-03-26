@@ -10,30 +10,28 @@ import {
 import React, { useMemo, useState } from 'react'
 import { isNil, isString } from 'lodash'
 import MainLayout from '../../layouts/MainLayout'
+import { QuestionContext } from '../../context/QuestionProvider'
 import { useParams, Link as RouteLink, Navigate } from 'react-router-dom'
 import { ChevronLeftIcon } from '@chakra-ui/icons'
+import { UserContext } from '../../context/UserProvider'
 import { QuestionContainer } from '../../components/QuestionContainer'
+import {
+  DispatchFeedbackContext,
+  FeedbackContext,
+} from '../../context/FeedbackProvider'
+import { AccountContext } from '../../context/AccountProvider'
 import Button from '../../components/Button'
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import { addFeedback } from '../../store/FeedbackSlice'
 
 export interface IAnswer {
   [x: string]: string | number
 }
 
 const FeedBackQuestions = () => {
-  const { questions, questionsLoading, questionsError } = useAppSelector(
-    (state) => state.questions,
-  )
-  const feedbacks = useAppSelector((state) => state.feedbacks.feedbacks)
-  const dispatch = useAppDispatch()
-  const { account: currentUser } = useAppSelector((state) => state.account)
-
-  const {
-    users: employees,
-    usersError,
-    usersLoading,
-  } = useAppSelector((state) => state.users)
+  const questions = React.useContext(QuestionContext)
+  const feedbacks = React.useContext(FeedbackContext)
+  const feedbackDispatch = React.useContext(DispatchFeedbackContext)
+  const currentUser = React.useContext(AccountContext)
+  const employees = React.useContext(UserContext)
   const [answer, setAnswer] = useState<IAnswer>({})
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
   let { employeeId } = useParams<'employeeId'>()
@@ -71,18 +69,15 @@ const FeedBackQuestions = () => {
       return
     }
 
-    if (
-      currentQuestionIdx + 1 === questions.length &&
-      currentUser !== null &&
-      employeeId
-    ) {
-      dispatch(
-        addFeedback({
+    if (currentQuestionIdx + 1 === questions.length) {
+      feedbackDispatch({
+        action: 'ADD_FEEDBACK',
+        payload: {
           questions: answer,
-          from: currentUser.id,
+          from: currentUser?.id,
           to: employeeId,
-        }),
-      )
+        },
+      })
 
       return <Navigate to="/share-feedback/successful" />
     }

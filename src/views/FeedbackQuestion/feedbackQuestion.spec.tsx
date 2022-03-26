@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Router, Routes } from 'react-router-dom'
 import FeedBackQuestions from '.'
+import { QuestionT } from '../../context/QuestionProvider'
+import { UserT } from '../../context/types'
 import customRender from '../../tests/index'
 import { createMemoryHistory } from 'history'
-import { QuestionT } from '../../store/QuestionsSlice'
-import { UserT } from '../../store/UsersSlice'
 
 const users = [
   {
